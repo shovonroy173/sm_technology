@@ -1,40 +1,66 @@
-const video = document.getElementById('myVideo');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-console.log(video ,  playPauseBtn , video.currentTime);
+document.querySelectorAll('.video-container').forEach((container) => {
+  const video = container.querySelector('video');
+  const playPauseBtn = container.querySelector('.play-pause-button');
 
-    // Toggle play/pause on button click
-    playPauseBtn.addEventListener('click', () => {
-      if (video.paused) {
-        video.play();
-        console.log("start");
-        
-        playPauseBtn.textContent = '⏸'; 
-        // Change to pause icon
-        playPauseBtn.style.position = 'absolute';
-        playPauseBtn.style.bottom = '50%';
-      } else {
-        video.pause();
-        video.load();
-        console.log(video.currentTime);
-        
-        console.log("stop");
+  // Toggle play/pause on button click
+  playPauseBtn.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+      playPauseBtn.textContent = '❚❚'; // Change to pause icon
+      playPauseBtn.style.position = 'absolute';
+      playPauseBtn.style.bottom = '50%';
+    } else {
+      video.pause();
+      video.load(); 
+      playPauseBtn.textContent = '▶'; // Change to play icon
+    }
+  });
 
-        playPauseBtn.textContent = '▶'; // Change to play icon
-      }
-    });
+  // Reset the button when the video ends
+  video.addEventListener('ended', () => {
+    video.load(); // Reset to the start
+    playPauseBtn.textContent = '▶';
+    playPauseBtn.style.opacity = '1';
+  });
+});
 
-    // Hide the button when the video is playing
-    video.addEventListener('play', () => {
-      // playPauseBtn.style.opacity = '0';
-    });
 
-    // Show the button when the video is paused
-    video.addEventListener('pause', () => {
-      playPauseBtn.style.opacity = '1';
-    });
+const slides = document.querySelectorAll('.slide');
+// const next = document.querySelector('.next-btn');
+const prev = document.querySelector('.prev-btn');
+var counter = 0;
 
-    video.addEventListener('ended', () => {
-      video.load(); // Reset video to the start
-      playPauseBtn.textContent = '▶';
-      playPauseBtn.style.opacity = '1' // Update to play icon
-    });
+const goPrev = () => {
+  counter--;
+  if(counter <= 0 ){
+    counter = 0;
+  }
+  slideImage(); 
+  toggleButtons();
+}
+
+const goNext = () => {
+  counter++;
+  if(counter > slides.length - 1){
+    counter = 0;
+  }
+  slideImage();
+  toggleButtons();
+
+}
+
+const slideImage = () => {
+  slides.forEach((slide)=>{
+    slide.style.transform = `translateX(-${counter * 100}px)`;
+  })
+}
+
+  const toggleButtons = () => {
+    if (counter === 0) {
+      prev.style.display = 'none';
+    } else {
+      prev.style.display = 'block'; 
+    }
+  };
+
+  toggleButtons();
